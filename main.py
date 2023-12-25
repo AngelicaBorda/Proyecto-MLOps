@@ -3,11 +3,11 @@ import pandas as pd
 
 ##############FUNCION 2
 
-data_userforgenre = pd.read_csv("./data/data_funcion2.csv")  #importo mi dataset
+data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  #importo mi dataset
 
 app = FastAPI()  #instancio la API
 
-@app.get("data_funcion2")  #la ruta es el endpoint
+@app.get("User_For_Genres")  #la ruta es el endpoint
 def get_user_for_genre(genero: str = None) -> dict:
     ''' devolver usuario que mas horas jugo un genero dado
 
