@@ -1,6 +1,10 @@
-from fastapi import FastAPI
+pip install --upgrade fastapi uvicorn
+from fastapi import FastAPI, HTTPException
 import pandas as pd
 
+from fastapi import FastAPI
+
+app = FastAPI(debug=True)
 
 
 data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dataset
@@ -11,30 +15,34 @@ app = FastAPI()  # instancio la API
 
 ####### Funcion 1
 
+from fastapi import FastAPI
+import pandas as pd
+
+app = FastAPI()
+
+# Cargar el dataset
+Most_Played_Genre = pd.read_csv('./data/Most_Played_Genre.csv')
+
 @app.get("/Most_Played_Genre")
 def PlayTimeGenre(genero: str = None) -> dict:
-    Most_Played_Genre = pd.read_csv("./data/Most_Played_Genre.csv") 
- 
     """Devuelve el año de lanzamiento con más horas jugadas para el género dado
 
-    Args: uvicor
+    Args:
         genero (str, opcional): inserte un género. Defaults None.
 
     Return:
         dict: retorna un diccionario
-    
+
     """
     df_genero = Most_Played_Genre[Most_Played_Genre['generos'] == genero]
-    
+
     # Agrupar por año de lanzamiento y calcular la suma de las horas jugadas
     df_suma_horas = df_genero.groupby('release_date')['playtime_forever'].sum()
-    
+
     # Obtener el año con más horas jugadas
     año_max_horas = df_suma_horas.idxmax()
-    
-    result = {"Año de lanzamiento con más horas jugadas para el género {}".format(genero): año_max_horas}
-      
-    return result 
+
+    return {"Año de lanzamiento con más horas jugadas para el género " + genero: año_max_horas}
 
 
 
