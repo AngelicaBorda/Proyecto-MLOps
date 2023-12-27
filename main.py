@@ -12,8 +12,8 @@ app = FastAPI()  # instancio la API
 ####### Funcion 1
 
 @app.get("/Most_Played_Genre")
-def PlayTimeGenre(genero: str = None)gigit -> dict: 
-    """Devuelve el año de lanzamiento con mas horas jugadas para el genero dado
+def PlayTimeGenre(genero: str = None) -> dict:
+    """Devuelve el año de lanzamiento con más horas jugadas para el género dado
 
     Args: 
         genero (str, opcional): inserte un género. Defaults None.
@@ -30,7 +30,7 @@ def PlayTimeGenre(genero: str = None)gigit -> dict:
     # Obtener el año con más horas jugadas
     año_max_horas = df_suma_horas.idxmax()
     
-    return {"Año de lanzamiento con más horas jugadas para el genero" + genero: año_max_horas}
+    return {"Año de lanzamiento con más horas jugadas para el género " + genero: año_max_horas}
 
 
 
