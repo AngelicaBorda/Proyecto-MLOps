@@ -11,7 +11,7 @@ app = FastAPI()  # instancio la API
 
 ####### Funcion 1
 
-@app.get('/Most_Played_Genre')
+@app.get("/Most_Played_Genre")
 def PlayTimeGenre(genero: str = None) -> dict: 
     """Devuelve el año de lanzamiento con mas horas jugadas para el genero dado
 
