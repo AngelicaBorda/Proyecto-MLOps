@@ -30,8 +30,8 @@ def PlayTimeGenre(genero: str = None) -> dict:
     # Obtener el año con más horas jugadas
     año_max_horas = df_suma_horas.idxmax()
     
-    result = {"Año de lanzamiento con más horas jugadas para el género " + genero: año_max_horas}
-
+    result = {"Año de lanzamiento con más horas jugadas para el género {}".format(genero): año_max_horas}
+      
     return result 
 
 
