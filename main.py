@@ -4,7 +4,7 @@ import pandas as pd
 
 
 data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dataset
-Most_Played_Genre = pd.read_csv("./data/git commit Most_Played_Genre.csv")
+Most_Played_Genre = pd.read_csv("./data/Most_Played_Genre.csv")
 
 
 app = FastAPI()  # instancio la API
@@ -15,7 +15,7 @@ app = FastAPI()  # instancio la API
 def PlayTimeGenre(genero: str = None) -> dict:
     """Devuelve el año de lanzamiento con más horas jugadas para el género dado
 
-    Args: 
+    Args: uvicor
         genero (str, opcional): inserte un género. Defaults None.
 
     Return:
