@@ -1,10 +1,7 @@
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 import pandas as pd
 
-from fastapi import FastAPI
-
-app = FastAPI(debug=True)
 
 
 data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dataset
@@ -18,9 +15,10 @@ app = FastAPI()  # instancio la API
 ####### Funcion 1
 
 
-@app.get("/Most_Played_Genre")
+@app.get("/Most_Played_Genre{genero}")
 def PlayTimeGenre(genero: str = None) -> dict:
-    """Devuelve el año de lanzamiento con más horas jugadas para el género dado
+
+    '''Devuelve el año de lanzamiento con más horas jugadas para el género dado
 
     Args:
         genero (str, opcional): inserte un género. Defaults None.
@@ -28,7 +26,7 @@ def PlayTimeGenre(genero: str = None) -> dict:
     Return:
         dict: retorna un diccionario
 
-    """
+    '''
     df_genero = Most_Played_Genre[Most_Played_Genre['generos'] == genero]
 
     df_suma_horas = df_genero.groupby('release_date')['playtime_forever'].sum()
@@ -75,6 +73,17 @@ def get_user_for_genre(genero: str = None) -> dict:
 
 @app.get("/Top_Recommended_Games")
 def UsersRecommend(año: int):
+    
+    ''' devolver para el año dado, el top 3 juegos mas recomendados 
+
+    Args:
+        año(int): inserte un año. 
+
+    Return:
+        dict: retorna un diccionario
+
+    '''
+    
     # Filtrar el dataset por el año proporcionado
     filtered_data = Top_Recommended_Games[Top_Recommended_Games['año_posted'] == año]
 
@@ -90,3 +99,38 @@ def UsersRecommend(año: int):
               {"Puesto 3": top_games.iloc[2]['item_name']}]
 
     return result
+
+######## Funcion 4
+
+@app.get("/Top_Menos_Recommended_Games")
+def UsersRecommendLeast(año: int):
+    
+    ''' devolver para el año dado, el top 3 juegos menos recomendados 
+
+    Args:
+        año(int): inserte un año. 
+
+    Return:
+        dict: retorna un diccionario
+
+    '''
+    
+    # Filtrar el dataset por el año proporcionado
+    filtered_data = Top_Recommended_Games[Top_Recommended_Games['año_posted'] == año]
+
+    # Filtrar los juegos menos recomendados (recommend=0 y sentimiento=1 o 2)
+    least_recommended_games = filtered_data[(filtered_data['recommend'] == 0) & (filtered_data['sentimiento'].isin([0]))]
+
+    # Obtener el top 3 de juegos menos recomendados
+    bottom_games = least_recommended_games.nsmallest(3, 'recommend')
+
+    # Crear el resultado en el formato deseado
+    result = [{"Puesto 1 de juego menos recomendado": bottom_games.iloc[0]['item_name']},
+              {"Puesto 2 de juego menos recomendado": bottom_games.iloc[1]['item_name']},
+              {"Puesto 3 de juego menos recomendado": bottom_games.iloc[2]['item_name']}]
+
+    return result
+
+
+####### Funcion 5
+
