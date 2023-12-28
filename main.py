@@ -102,7 +102,7 @@ def UsersRecommend(año: int):
 
 ######## Funcion 4
 
-@app.get("/Top_Menos_Recommended_Games")
+@app.get("/Top_Recommended_Games")
 def UsersRecommendLeast(año: int):
     
     ''' devolver para el año dado, el top 3 juegos menos recomendados 
