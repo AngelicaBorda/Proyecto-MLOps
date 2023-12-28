@@ -9,7 +9,7 @@ app = FastAPI(debug=True)
 
 data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dataset
 
-
+Most_Played_Genre = pd.read_csv("./data/Most_Played_Genre.csv")
 
 app = FastAPI()  # instancio la API
 
@@ -18,10 +18,8 @@ app = FastAPI()  # instancio la API
 from fastapi import FastAPI
 import pandas as pd
 
-app = FastAPI()
-
 # Cargar el dataset
-Most_Played_Genre = pd.read_csv("./data/Most_Played_Genre.csv")
+
 
 @app.get("/Most_Played_Genre")
 def PlayTimeGenre(genero: str = None) -> dict:
@@ -36,10 +34,8 @@ def PlayTimeGenre(genero: str = None) -> dict:
     """
     df_genero = Most_Played_Genre[Most_Played_Genre['generos'] == genero]
 
-    # Agrupar por año de lanzamiento y calcular la suma de las horas jugadas
     df_suma_horas = df_genero.groupby('release_date')['playtime_forever'].sum()
 
-    # Obtener el año con más horas jugadas
     año_max_horas = df_suma_horas.idxmax()
 
     return {"Año de lanzamiento con más horas jugadas para el género " + genero: año_max_horas}
