@@ -119,7 +119,7 @@ def UsersRecommendLeast(año: int):
     filtered_data = Top_Recommended_Games[Top_Recommended_Games['año_posted'] == año]
 
     # Filtrar los juegos menos recomendados (recommend=0 y sentimiento=1 o 2)
-    least_recommended_games = filtered_data[(filtered_data['recommend'] == 0) & (filtered_data['sentimiento'].isin([0]))]
+    least_recommended_games = filtered_data[(filtered_data['recommend'] == 0) & (filtered_data['sentimiento'].isin(0))]
 
     # Obtener el top 3 de juegos menos recomendados
     bottom_games = least_recommended_games.nsmallest(3, 'recommend')
