@@ -11,14 +11,11 @@ data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dat
 
 Most_Played_Genre = pd.read_csv("./data/Most_Played_Genre.csv")
 
+Top_Recommended_Games = pd.read_csv("./data/Top_Recommended_Games.csv")
+
 app = FastAPI()  # instancio la API
 
 ####### Funcion 1
-
-from fastapi import FastAPI
-import pandas as pd
-
-# Cargar el dataset
 
 
 @app.get("/Most_Played_Genre")
@@ -38,7 +35,8 @@ def PlayTimeGenre(genero: str = None) -> dict:
 
     año_max_horas = df_suma_horas.idxmax()
 
-    return {"Año de lanzamiento con más horas jugadas para el género " + genero: año_max_horas}
+    result = {"Año de lanzamiento con más horas jugadas para el género {}".format (genero): año_max_horas}
+    return result
 
 
 
@@ -75,4 +73,20 @@ def get_user_for_genre(genero: str = None) -> dict:
 
 ####### Funcion 3
 
+@app.get("/Top_Recommended_Games")
+def UsersRecommend(año: int):
+    # Filtrar el dataset por el año proporcionado
+    filtered_data = Top_Recommended_Games[Top_Recommended_Games['año_posted'] == año]
 
+    # Filtrar los juegos recomendados (recommend=1 y sentimiento=1 o 2)
+    recommended_games = filtered_data[(filtered_data['recommend'] == 1) & (filtered_data['sentimiento'].isin([1, 2]))]
+
+    # Obtener el top 3 de juegos más recomendados
+    top_games = recommended_games.nlargest(3, 'recommend')
+
+    # Crear el resultado en el formato deseado
+    result = [{"Puesto 1": top_games.iloc[0]['item_name']},
+              {"Puesto 2": top_games.iloc[1]['item_name']},
+              {"Puesto 3": top_games.iloc[2]['item_name']}]
+
+    return result
