@@ -1,4 +1,4 @@
-pip install --upgrade fastapi uvicorn
+
 from fastapi import FastAPI, HTTPException
 import pandas as pd
 
