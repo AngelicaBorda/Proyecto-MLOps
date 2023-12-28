@@ -21,7 +21,7 @@ import pandas as pd
 app = FastAPI()
 
 # Cargar el dataset
-Most_Played_Genre = pd.read_csv('./data/Most_Played_Genre.csv')
+Most_Played_Genre = pd.read_csv("./data/Most_Played_Genre.csv")
 
 @app.get("/Most_Played_Genre")
 def PlayTimeGenre(genero: str = None) -> dict:
