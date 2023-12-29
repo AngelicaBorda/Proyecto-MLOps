@@ -1,7 +1,7 @@
 
 from fastapi import FastAPI
 import pandas as pd
-
+from typing import Dict
 
 
 data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dataset
@@ -9,6 +9,11 @@ data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dat
 Most_Played_Genre = pd.read_csv("./data/Most_Played_Genre.csv")
 
 Top_Recommended_Games = pd.read_csv("./data/Top_Recommended_Games.csv")
+
+Top_Less_Recommended = pd.read_csv("./data/Top_Recommended_Games.csv")
+
+User_Sentiment = pd.read_csv("./data/User_Sentiment.csv")
+
 
 app = FastAPI()  # instancio la API
 
@@ -102,7 +107,7 @@ def UsersRecommend(año: int):
 
 ######## Funcion 4
 
-@app.get("/Top_Recommended_Games")
+@app.get("/Top_Top_Less_Recommended")
 def UsersRecommendLeast(año: int):
     
     ''' devolver para el año dado, el top 3 juegos menos recomendados 
@@ -119,7 +124,7 @@ def UsersRecommendLeast(año: int):
     filtered_data = Top_Recommended_Games[Top_Recommended_Games['año_posted'] == año]
 
     # Filtrar los juegos menos recomendados (recommend=0 y sentimiento=1 o 2)
-    least_recommended_games = filtered_data[(filtered_data['recommend'] == 0) & (filtered_data['sentimiento'].isin(0))]
+    least_recommended_games = filtered_data[(filtered_data['recommend'] == 0) & (filtered_data['sentimiento'].isin([0]))]
 
     # Obtener el top 3 de juegos menos recomendados
     bottom_games = least_recommended_games.nsmallest(3, 'recommend')
@@ -134,3 +139,23 @@ def UsersRecommendLeast(año: int):
 
 ####### Funcion 5
 
+
+app = FastAPI()
+
+@app.get("/User_Sentiment")
+def sentiment_analysis(año: int):
+    
+    # Filtra el dataset por el año proporcionado
+    filtered_data = User_Sentiment[User_Sentiment['año_posted'] == año]
+
+    # Suma los registros consignados en la columna sentimiento
+    sentiment_counts = filtered_data['sentimiento'].value_counts()
+
+    # Crea el diccionario de retorno
+    result: Dict[str, int] = {
+        "Negative": sentiment_counts.get(0, 0),
+        "Neutral": sentiment_counts.get(1, 0),
+        "Positive": sentiment_counts.get(2, 0)
+    }
+
+    return result
