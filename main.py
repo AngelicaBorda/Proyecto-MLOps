@@ -20,7 +20,7 @@ app = FastAPI()  # instancio la API
 ####### Funcion 1
 
 
-@app.get("/Most_Played_Genre{genero}")
+@app.get("/Most_Played_Genre")
 def PlayTimeGenre(genero: str = None) -> dict:
 
     '''Devuelve el año de lanzamiento con más horas jugadas para el género dado
@@ -140,11 +140,9 @@ def UsersRecommendLeast(año: int):
 ####### Funcion 5
 
 
-app = FastAPI()
-
 @app.get("/User_Sentiment")
 def sentiment_analysis(año: int):
-    
+
     # Filtra el dataset por el año proporcionado
     filtered_data = User_Sentiment[User_Sentiment['año_posted'] == año]
 
@@ -153,9 +151,38 @@ def sentiment_analysis(año: int):
 
     # Crea el diccionario de retorno
     result: Dict[str, int] = {
-        "Negative": sentiment_counts.get(0, 0),
-        "Neutral": sentiment_counts.get(1, 0),
-        "Positive": sentiment_counts.get(2, 0)
+        "Negative": sentiment_counts.get(0, 1),
+        "Neutral": sentiment_counts.get(1, 1),
+        "Positive": sentiment_counts.get(2, 1)
     }
 
     return result
+
+
+
+from fastapi import FastAPI
+import pandas as pd
+
+app = FastAPI()
+
+# Cargar el dataset
+
+@app.get("/User_Sentiment")
+def sentiment_analysis(año: int) -> dict:
+    """Realiza el análisis de sentimiento según el año de lanzamiento
+
+    Args:
+        año (int): año de lanzamiento
+
+    Return:
+        dict: retorna un diccionario con la suma de registros por cada sentimiento
+
+    """
+    df_año = User_Sentiment[User_Sentiment['release_date'] == año]
+
+    # Calcular la suma de registros por cada sentimiento
+    suma_negativos = (df_año['sentimiento'] == 0).sum()
+    suma_neutrales = (df_año['sentimiento'] == 1).sum()
+    suma_positivos = (df_año['sentimiento'] == 2).sum()
+
+    return {"Negative": suma_negativos, "Neutral": suma_neutrales, "Positive": suma_positivos}
