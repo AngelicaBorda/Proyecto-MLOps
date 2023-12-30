@@ -168,25 +168,4 @@ def UsersRecommendLeast(año: int):
 
 
 
-@app.get("/User_Sentiment")
 
-def sentiment_analysis(año:int):
-    
-
-
-        # Filtra los juegos del año especificado
-        juegos_año = User_Sentiment[User_Sentiment['release_date'] == año]
-        
-        # Lanza una excepción si no hay datos para el año y los filtros especificados
-        if juegos_año.empty:
-            raise Exception(f"No hay datos para el año {año} con los filtros especificados.")
-
-        # Cuenta la cantidad de sentimientos negativos, neutrales y positivos
-        resultados = {
-            'Negative': len(User_Sentiment[User_Sentiment['sentimiento'] == 0]),
-            'Neutral': len(User_Sentiment[User_Sentiment['sentimiento'] == 1]),
-            'Positive': len(User_Sentiment[User_Sentiment['sentimiento'] == 2])
-        }
-
-        # Devuelve los resultados como un diccionario
-        return resultados
