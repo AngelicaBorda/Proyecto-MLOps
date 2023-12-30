@@ -134,7 +134,7 @@ def UsersRecommend(año: int):
 
 ######## Funcion 4
 
-@app.get("/Top_Top_Less_Recommended")
+@app.get("/Top_Less_Recommended")
 def UsersRecommendLeast(año: int):
     
     ''' devolver para el año dado, el top 3 juegos menos recomendados 
@@ -167,5 +167,19 @@ def UsersRecommendLeast(año: int):
 ####### Funcion 5
 
 
+@app.get("/User_Sentiment")
+def sentiment_analysis(año: int = None):
+    # Filtra el dataset por el año proporcionado
+    filtered_data = User_Sentiment[User_Sentiment['release_date'] == año]
+
+    # Crea el diccionario de retorno
+    result = {
+        "Negative": len(filtered_data[filtered_data['sentimiento'] == 0]),
+        "Neutral": len(filtered_data[filtered_data['sentimiento'] == 1]),
+        "Positive": len(filtered_data[filtered_data['sentimiento'] == 2])
+
+    }
+
+    return result
 
 
