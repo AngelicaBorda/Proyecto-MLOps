@@ -2,7 +2,9 @@
 from fastapi import FastAPI
 import pandas as pd
 from typing import Dict
-
+from fastapi.responses import JSONResponse
+import numpy as np
+import json
 
 data_userforgenre = pd.read_csv("./data/User_For_Genres.csv")  # importo mis dataset
 
@@ -19,30 +21,55 @@ app = FastAPI()  # instancio la API
 
 ####### Funcion 1
 
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+import json
+import numpy as np
+import pandas as pd
 
+app = FastAPI()
+
+# Supongamos que `Most_Played_Genre` es un DataFrame definido previamente
+
+# Manejar la serialización de numpy.int64
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        return super(NumpyEncoder, self).default(obj)
+
+# Uso de un Codificador Personalizado para la respuesta JSON
 @app.get("/Most_Played_Genre")
-def PlayTimeGenre(genero: str = None) -> dict:
+def PlayTimeGenreCustom(genero: str = None) -> JSONResponse:
+    # Reemplaza 'tu_archivo.csv' con el nombre de tu archivo y ajusta la ruta según sea necesario
+    archivo_csv = "data/Most_Played_Genre.csv"
 
-    '''Devuelve el año de lanzamiento con más horas jugadas para el género dado
+    # Cargar el conjunto de datos desde el archivo CSV
+    my_dataset = pd.read_csv(archivo_csv)
 
-    Args:
-        genero (str, opcional): inserte un género. Defaults None.
+    # Filtrar por género
+    df_genero = my_dataset[my_dataset['generos'] == genero]
 
-    Return:
-        dict: retorna un diccionario
-
-    '''
-    df_genero = Most_Played_Genre[Most_Played_Genre['generos'] == genero]
-
+    # Calcular las horas totales jugadas por fecha de lanzamiento
     df_suma_horas = df_genero.groupby('release_date')['playtime_forever'].sum()
 
+    # Encontrar el año con más horas jugadas
     año_max_horas = df_suma_horas.idxmax()
 
-    result = {"Año de lanzamiento con más horas jugadas para el género {}".format (genero): año_max_horas}
-    return result
+    result = {"Año de lanzamiento con más horas jugadas para el género {}".format(genero): año_max_horas}
+
+    # Convertir el valor de `año_max_horas` a un tipo de dato serializable (int)
+    result["Año de lanzamiento con más horas jugadas para el género {}".format(genero)] = int(año_max_horas)
+
+    # Utilizar el Codificador Personalizado con ensure_ascii=False
+    content = json.dumps(result, ensure_ascii=False)
+    return JSONResponse(content=content)
 
 
 
+   
 #######Funcion 2
 
 @app.get("/User_For_Genres")  # la ruta es el endpoint
@@ -140,49 +167,26 @@ def UsersRecommendLeast(año: int):
 ####### Funcion 5
 
 
-@app.get("/User_Sentiment")
-def sentiment_analysis(año: int):
-
-    # Filtra el dataset por el año proporcionado
-    filtered_data = User_Sentiment[User_Sentiment['año_posted'] == año]
-
-    # Suma los registros consignados en la columna sentimiento
-    sentiment_counts = filtered_data['sentimiento'].value_counts()
-
-    # Crea el diccionario de retorno
-    result: Dict[str, int] = {
-        "Negative": sentiment_counts.get(0, 1),
-        "Neutral": sentiment_counts.get(1, 1),
-        "Positive": sentiment_counts.get(2, 1)
-    }
-
-    return result
-
-
-
-from fastapi import FastAPI
-import pandas as pd
-
-app = FastAPI()
-
-# Cargar el dataset
 
 @app.get("/User_Sentiment")
-def sentiment_analysis(año: int) -> dict:
-    """Realiza el análisis de sentimiento según el año de lanzamiento
 
-    Args:
-        año (int): año de lanzamiento
+def sentiment_analysis(año:int):
+    
 
-    Return:
-        dict: retorna un diccionario con la suma de registros por cada sentimiento
 
-    """
-    df_año = User_Sentiment[User_Sentiment['release_date'] == año]
+        # Filtra los juegos del año especificado
+        juegos_año = User_Sentiment[User_Sentiment['release_date'] == año]
+        
+        # Lanza una excepción si no hay datos para el año y los filtros especificados
+        if juegos_año.empty:
+            raise Exception(f"No hay datos para el año {año} con los filtros especificados.")
 
-    # Calcular la suma de registros por cada sentimiento
-    suma_negativos = (df_año['sentimiento'] == 0).sum()
-    suma_neutrales = (df_año['sentimiento'] == 1).sum()
-    suma_positivos = (df_año['sentimiento'] == 2).sum()
+        # Cuenta la cantidad de sentimientos negativos, neutrales y positivos
+        resultados = {
+            'Negative': len(User_Sentiment[User_Sentiment['sentimiento'] == 0]),
+            'Neutral': len(User_Sentiment[User_Sentiment['sentimiento'] == 1]),
+            'Positive': len(User_Sentiment[User_Sentiment['sentimiento'] == 2])
+        }
 
-    return {"Negative": suma_negativos, "Neutral": suma_neutrales, "Positive": suma_positivos}
+        # Devuelve los resultados como un diccionario
+        return resultados
