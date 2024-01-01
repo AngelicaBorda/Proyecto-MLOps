@@ -35,12 +35,12 @@ También se aplicó análisis de sentimiento con NLP, a la columna reviews, que 
 
 ### - **Archivo Main**
 
-<p>Contiene las funciones para los endpoints que se consumirán en la API.</p></p>
+<p>Contiene las funciones para los endpoints que se consumirán en la API.</pp>
 
 
 
 <p>@app.get("/most_played_genre")
-def PlayTimeGenreCustom(genero: str = None) -> JSONResponse:</p></p>
+def PlayTimeGenreCustom(genero: str = None) -> JSONResponse:</p>
 
 
 <p>Para el género ingresado devuelve el año con más horas jugadas por los usuarios.</p></p>
