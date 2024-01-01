@@ -52,3 +52,4 @@ tzdata==2023.3
 unicorn==2.0.1.post1
 uvicorn==0.25.0
 wcwidth==0.2.12
+scikit-learn
