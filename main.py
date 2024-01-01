@@ -22,7 +22,7 @@ Top_Less_Recommended = pd.read_csv("./data/Top_Recommended_Games.csv")
 
 User_Sentiment = pd.read_csv("./data/User_Sentiment.csv")
 
-data_model_sample = pd.read_csv(".data/Data_Model_sample")
+data_model_sample = pd.read_csv("./data/Data_Model_sample.csv")
 
 
 app = FastAPI()  # instancio la API
