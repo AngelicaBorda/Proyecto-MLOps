@@ -40,39 +40,28 @@ También se aplicó análisis de sentimiento con NLP, a la columna reviews, que 
 
 
 ### <p>@app.get("/most_played_genre")
-def PlayTimeGenreCustom(genero: str = None) -> JSONResponse:</p>
-
 
 <p>Para el género ingresado devuelve el año con más horas jugadas por los usuarios.</p>
 
 
-
 ### <p>@app.get("/User_For_Genres")
-def get_user_for_genre(genero: Optional[str] = None) -> dict:</p>
-
 
 <p>Para el género ingresado devuelve el usuario que acumula mas horas jugadas y una lista de horas acumuladas por año.</p>
 
 
-
 ### <p>@app.get("/Top_Recommended_Games")
-def UsersRecommend(año: Optional[int]):</p></p>
 
 
 <p>Para el año ingresado, devuelve el top 3 de juegos más recomendados.</p>
 
 
-
 ### <p>@app.get("/Top_Less_Recommended")
-def UsersRecommendLeast(año: Optional[int]):</p>
-
 
 <p>Para el año ingresado, devuelve el top 3 de juegos menos recomendados.</p>
 
 
 
 ### <p>@app.get("/User_Sentiment")
-def sentiment_analysis(año: Optional[int] = None):</p></p>
 
 
 <p>Para el año ingresado, devuelve una lista con la cantidad de reseñas de los usuarios. Categorizadas con análisis de sentimiento. </p></p>
