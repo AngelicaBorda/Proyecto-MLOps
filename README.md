@@ -35,47 +35,47 @@ También se aplicó análisis de sentimiento con NLP, a la columna reviews, que 
 
 ### - **Archivo Main**
 
-<p>Contiene las funciones para los endpoints que se consumirán en la API.</p>
+<p>Contiene las funciones para los endpoints que se consumirán en la API.</p></p>
 
 
 
 <p>@app.get("/most_played_genre")
-def PlayTimeGenreCustom(genero: str = None) -> JSONResponse:</p>
+def PlayTimeGenreCustom(genero: str = None) -> JSONResponse:</p></p>
 
 
-<p>Para el género ingresado devuelve el año con más horas jugadas por los usuarios.</p>
+<p>Para el género ingresado devuelve el año con más horas jugadas por los usuarios.</p></p>
 
 
 
 <p>@app.get("/User_For_Genres")
-def get_user_for_genre(genero: Optional[str] = None) -> dict:</p>
+def get_user_for_genre(genero: Optional[str] = None) -> dict:</p></p>
 
 
-<p>Para el género ingresado devuelve el usuario que acumula mas horas jugadas y una lista de horas acumuladas por año.</p>
+<p>Para el género ingresado devuelve el usuario que acumula mas horas jugadas y una lista de horas acumuladas por año.</p></p>
 
 
 
 <p>@app.get("/Top_Recommended_Games")
-def UsersRecommend(año: Optional[int]):</p>
+def UsersRecommend(año: Optional[int]):</p></p>
 
 
-<p>Para el año ingresado, devuelve el top 3 de juegos más recomendados.</p>
+<p>Para el año ingresado, devuelve el top 3 de juegos más recomendados.</p></p>
 
 
 
 <p>@app.get("/Top_Less_Recommended")
-def UsersRecommendLeast(año: Optional[int]):</p>
+def UsersRecommendLeast(año: Optional[int]):</p></p>
 
 
-<p>Para el año ingresado, devuelve el top 3 de juegos menos recomendados.</p>
+<p>Para el año ingresado, devuelve el top 3 de juegos menos recomendados.</p></p>
 
 
 
 <p>@app.get("/User_Sentiment")
-def sentiment_analysis(año: Optional[int] = None):</p>
+def sentiment_analysis(año: Optional[int] = None):</p></p>
 
 
-<p>Para el año ingresado, devuelve una lista con la cantidad de reseñas de los usuarios. Categorizadas con análisis de sentimiento. </p>
+<p>Para el año ingresado, devuelve una lista con la cantidad de reseñas de los usuarios. Categorizadas con análisis de sentimiento. </p></p>
 
 
 
@@ -84,22 +84,23 @@ def sentiment_analysis(año: Optional[int] = None):</p>
 <p>También se encuentra en el archivo main.</p>
 
 
-<p>El  Modelo e basa en una relación Item-Item y sigue los siguientes pasos:</p>
+<p>El  Modelo e basa en una relación Item-Item y sigue los siguientes pasos:</p></p>
 
 ### **Creación de la Matriz de Utilidad:**
-<p>Se genera una matriz que tiene usuarios en las filas, juegos en las columnas y el tiempo jugado como valores.</p>
+<p>Se genera una matriz que tiene usuarios en las filas, juegos en las columnas y el tiempo jugado como valores.</p></p>
 
 ### **Normalización de la Matriz:**
-<p>La matriz se normaliza para mitigar las diferencias en las magnitudes de las horas de juego.</p>
+<p>La matriz se normaliza para mitigar las diferencias en las magnitudes de las horas de juego.</p></p>
 
 ### **Manejo de NaN e Imputación con PCA:**
 <p>Los NaN se manejan rellenándolos con la media de cada columna.
-Se utiliza PCA (Análisis de Componentes Principales) para reducir la dimensionalidad de los datos a 100 componentes principales.</p>
+Se utiliza PCA (Análisis de Componentes Principales) para reducir la dimensionalidad de los datos a 100 componentes principales.</p></p>
 
 ### **Verificación de Longitudes después de la Reducción de Dimensionalidad:**
-<p>Se verifica que las longitudes coincidan después de la reducción de dimensionalidad para garantizar el formato correcto de los datos.</p>
+<p>Se verifica que las longitudes coincidan después de la reducción de dimensionalidad para garantizar el formato correcto de los datos.</p></p>
 
 ### **API para Recomendación de Juegos:**
-<p>Se expone una API con un endpoint para recomendar juegos basados en la similitud del juego de entrada.</p>
+<p>Se expone una API con un endpoint para recomendar juegos basados en la similitud del juego de entrada.</p></p>
+
 
 <p>Este modelo ofrece recomendaciones de juegos basadas en la similitud de los patrones de juego, proporcionando una experiencia personalizada a los usuarios.</p>
